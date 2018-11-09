@@ -1,0 +1,16 @@
+{
+  "/": {
+    "src/codevember-app.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "src/codevember-day.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  }
+}

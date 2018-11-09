@@ -1,0 +1,21 @@
+{
+  "name": "Codevember '18 | alejo.st",
+  "short_name": "Codevember '18",
+  "description": "Animations created with After Effects and exported with bodymovin to use with Lottie for the Codevember 2018 challenge.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#403C54",
+  "background_color": "#403C54",
+  "icons": [
+    {
+      "src": "images/manifest/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/manifest/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
