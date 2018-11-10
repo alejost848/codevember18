@@ -3,6 +3,7 @@
   "shell": "src/codevember-app.js",
   "sources": [
     "animations/*",
+    "fonts/*",
     "images/*"
   ],
   "extraDependencies": [
