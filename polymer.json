@@ -2,12 +2,14 @@
   "entrypoint": "index.html",
   "shell": "src/codevember-app.js",
   "sources": [
-    "animations/*"
+    "animations/*",
+    "images/*"
   ],
   "extraDependencies": [
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
-    "push-manifest.json"
+    "push-manifest.json",
+    "lottie_light.min.js"
   ],
   "builds": [
     {
