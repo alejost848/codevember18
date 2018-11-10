@@ -18,14 +18,11 @@ class CodevemberApp extends LitElement {
         padding: 138px 0;
         grid-template-columns: repeat(12, 1fr);
         grid-gap: 24px;
-        grid-auto-rows: 112px;
-        grid-auto-flow: row;
+        grid-auto-rows: 300px;
         transition: padding 0.3s ease;
       }
       
       #intro {
-        grid-column: span 3;
-        grid-row: span 3;
         color: white;
         display: flex;
         flex-direction: row;
@@ -61,39 +58,25 @@ class CodevemberApp extends LitElement {
       }
       codevember-day{
         grid-column: span 3;
-        grid-row: span 3;
+        grid-row: span 1;
       }
-      codevember-day:nth-of-type(1){
+      .small{
         grid-column: span 3;
-        grid-row: span 3;
       }
-      codevember-day:nth-of-type(2){
-        grid-column: span 3;
-        grid-row: span 3;
+      .medium{
+        grid-column: span 4;
       }
-      codevember-day:nth-of-type(3){
-        grid-column: span 3;
-        grid-row: span 3;
-      }
-      codevember-day:nth-of-type(4){
+      .large{
         grid-column: span 5;
-        grid-row: span 3;
+      }
+      
+      codevember-day:nth-of-type(4){
         --animation-width: auto;
         --animation-height: 120%;
       }
-      codevember-day:nth-of-type(5){
-        grid-column: span 4;
-        grid-row: span 3;
-      }
       codevember-day:nth-of-type(7){
-        grid-column: span 4;
-        grid-row: span 3;
         --animation-width: 100%;
         --animation-height: auto;
-      }
-      codevember-day:nth-of-type(9){
-        grid-column: span 5;
-        grid-row: span 3;
       }
 
       @media(max-width: 1700px){
@@ -104,15 +87,23 @@ class CodevemberApp extends LitElement {
       @media(max-width: 1500px){
         #grid{
           grid-template-columns: repeat(6, 1fr);
-          grid-auto-rows: 86px;
+        }
+        .small{
+          grid-column: span 2;
+        }
+        .medium{
+          grid-column: span 4;
+        }
+        .large{
+          grid-column: span 4;
         }
       }
     </style>
 
     <div id="grid">
-      <div id="intro">
+      <div id="intro" class="small">
         <div id="title_box">
-          <a id="logo" href="https://alejo.st" target="_blank">${alejostIcon}</a>
+          <a id="logo" href="https://alejo.st" target="_blank" rel="noopener">${alejostIcon}</a>
           <span class="flex"></span>
           <h1>
             Code
@@ -123,8 +114,8 @@ class CodevemberApp extends LitElement {
         <h2>'18</h2>
       </div>
 
-      ${this.data.map((description, index) => html`
-        <codevember-day day="${index + 1}" description="${description}"></codevember-day>
+      ${this.data.map((day, index) => html`
+        <codevember-day day="${index + 1}" description="${day.description}" class="${day.size}"></codevember-day>
       `)}
     </div>
     `;
@@ -139,36 +130,36 @@ class CodevemberApp extends LitElement {
   constructor(){
     super();
     this.data = [
-      "Infinity",
-      "Time",
-      "Carrot",
-      "Sky",
-      "Music",
-      "Web",
-      "Sea",
-      "Cat",
-      "Green",
-      "Apple",
-      "RGB",
-      "Bread",
-      "Black Hole",
-      "Coffee",
-      "Fire",
-      "Star",
-      "Crown",
-      "Paper",
-      "Eggs",
-      "Socks",
-      "Skate",
-      "Keys",
-      "Lollipop",
-      "Printer",
-      "Screwdriver",
-      "Bed",
-      "Man Bun",
-      "Speakers",
-      "Supermarket",
-      "Computer"
+      {description: "Infinity", size: "small"},
+      {description: "Time", size: "small"},
+      {description: "Carrot", size: "small"},
+      {description: "Sky", size: "large"},
+      {description: "Music", size: "small"},
+      {description: "Web", size: "medium"},
+      {description: "Sea", size: "medium"},
+      {description: "Cat", size: "small"},
+      {description: "Green", size: "large"},
+      {description: "Apple", size: "small"},
+      {description: "RGB", size: "small"},
+      {description: "Bread", size: "small"},
+      {description: "Black Hole", size: "small"},
+      {description: "Coffee", size: "small"},
+      {description: "Fire", size: "small"},
+      {description: "Star", size: "small"},
+      {description: "Crown", size: "small"},
+      {description: "Paper", size: "small"},
+      {description: "Eggs", size: "small"},
+      {description: "Socks", size: "small"},
+      {description: "Skate", size: "small"},
+      {description: "Keys", size: "small"},
+      {description: "Lollipop", size: "small"},
+      {description: "Printer", size: "small"},
+      {description: "Screwdriver", size: "small"},
+      {description: "Bed", size: "small"},
+      {description: "Man Bun", size: "small"},
+      {description: "Speakers", size: "small"},
+      {description: "Supermarket", size: "small"},
+      {description: "Computer", size: "small"}
     ];
   }
 }
