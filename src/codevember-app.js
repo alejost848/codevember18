@@ -103,7 +103,7 @@ class CodevemberApp extends LitElement {
     <div id="grid">
       <div id="intro" class="small">
         <div id="title_box">
-          <a id="logo" href="https://alejo.st" target="_blank" rel="noopener">${alejostIcon}</a>
+          <a id="logo" href="https://alejo.st" target="_blank" rel="noopener" title="Logo">${alejostIcon}</a>
           <span class="flex"></span>
           <h1>
             Code
