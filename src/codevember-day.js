@@ -88,6 +88,31 @@ class CodevemberDay extends LitElement {
 
   firstUpdated() {
     this._formattedDay = ('0' + this.day).slice(-2);
+   
+    switch (this.day) {
+      case "2":
+        fetch(`animations/${this._formattedDay}.json`)
+          .then(response => response.json())
+          .then(json => {
+            let day02Data = json;
+
+            let date = new Date();
+            let minutesRotation = 6 * date.getMinutes();
+            let hoursRotation = 30 * ((date.getHours() + 24) % 12 || 12);
+
+            day02Data.layers[1].ks.r.k = minutesRotation;
+            day02Data.layers[2].ks.r.k = hoursRotation;
+            
+            lottie.loadAnimation({
+              container: this.shadowRoot.getElementById('animation'),
+              renderer: 'svg',
+              loop: true,
+              autoplay: true,
+              animationData: day02Data
+            });
+          });
+        break;    
+      default:      
     lottie.loadAnimation({
       container: this.shadowRoot.getElementById('animation'),
       renderer: 'svg',
@@ -96,6 +121,7 @@ class CodevemberDay extends LitElement {
       path: `animations/${this._formattedDay}.json`
     }); 
   }
+}
 }
 
 window.customElements.define('codevember-day', CodevemberDay);
