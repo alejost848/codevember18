@@ -98,6 +98,49 @@ class CodevemberApp extends LitElement {
           grid-column: span 4;
         }
       }
+      @media(max-width: 1100px){
+        #grid{
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .small{
+          grid-column: span 2;
+        }
+        .medium{
+          grid-column: span 2;
+        }
+        .large{
+          grid-column: span 2;
+        }
+      }
+      @media(max-width: 768px){
+        #grid{
+          grid-template-columns: repeat(2, 1fr);
+          padding: 48px 24px;
+        }
+        .small{
+          grid-column: span 2;
+        }
+        .medium{
+          grid-column: span 2;
+        }
+        .large{
+          grid-column: span 2;
+        }
+        h1 {
+          width: 180px;
+          font-size: 40px;
+          line-height: 34px;
+        }
+        h2 {
+          font-size: 30px;
+          line-height: 26px;
+        }
+      }
+      @media(max-width: 480px){
+        #grid{
+          padding: 24px 8px;
+        }
+      }
     </style>
 
     <div id="grid">
