@@ -20,6 +20,7 @@ class CodevemberDay extends LitElement {
       #animation{
         width: var(--animation-width, 100%);
         height: var(--animation-height, 100%);
+        transform: scale(var(--animation-scale, 1.0));
       }
 
       .card_info{
@@ -113,15 +114,15 @@ class CodevemberDay extends LitElement {
           });
         break;    
       default:      
-    lottie.loadAnimation({
-      container: this.shadowRoot.getElementById('animation'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: `animations/${this._formattedDay}.json`
-    }); 
+        lottie.loadAnimation({
+          container: this.shadowRoot.getElementById('animation'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: `animations/${this._formattedDay}.json`
+        });
+    }    
   }
-}
 }
 
 window.customElements.define('codevember-day', CodevemberDay);

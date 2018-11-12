@@ -71,12 +71,12 @@ class CodevemberApp extends LitElement {
       }
       
       codevember-day:nth-of-type(4){
-        --animation-width: auto;
-        --animation-height: 120%;
+        --animation-scale: 1.7;
       }
       codevember-day:nth-of-type(7){
         --animation-width: 100%;
         --animation-height: auto;
+        --animation-scale: 1.3;
       }
 
       @media(max-width: 1700px){
