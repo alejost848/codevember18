@@ -6,15 +6,15 @@ class CodevemberDay extends LitElement {
     <style>
       :host {        
         position: relative;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: #39364b;
         border-radius: 10px;
         overflow: hidden;
         transition: transform 0.4s ease;
-        transform: translateX(0px);
+        transform: scaleX(1.0);
       }
 
       :host(:hover) {
-        transform: translateX(5px);
+        transform: scaleX(1.02);
       }
 
       #animation{
@@ -26,41 +26,32 @@ class CodevemberDay extends LitElement {
       .card_info{
         position: absolute;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
         width: 100%;
-        height: 100%;
-        padding: 24px;
-        padding-right: 48px;
+        padding: 16px 24px;
+        padding-top: 24px;
+        bottom: 0;
         box-sizing: border-box;
-        opacity: 0;
         color: white;
         z-index: 1;
-        transition: opacity 0.4s ease;
-        background-image: linear-gradient(to right, #ff6668, rgba(220,40,60,0.2) );
-      }
-
-      :host(:hover) .card_info{
-        opacity: 1;
+        pointer-events: none;
       }
       
       h3{
         margin: 0;
-        font-size: 80px;
+        font-size: 40px;
         font-weight: 600;
-        line-height: 80px;
-        transition: transform 0.4s ease;
-        transform: translateX(-100px);
-      }
-      :host(:hover) h3{
-        transform: translateX(0px);
+        line-height: 40px;
+        opacity: 0.08;
       }
 
       h4{
         margin: 0;
-        font-size: 30px;
+        font-size: 18px;
         font-weight: 400;
-        transition: transform 0.45s ease;
-        transform: translateX(-150px);
+        transition: transform 0.4s ease;
+        transform: translateX(150px);
       }
       :host(:hover) h4{
         transform: translateX(0px);
@@ -68,6 +59,10 @@ class CodevemberDay extends LitElement {
       
       .flex{
         flex: 1;
+      }
+
+      #C,#D,#E,#F,#G,#A,#B{
+        cursor: pointer;
       }
     </style>
     <div class="card_info">
@@ -83,12 +78,13 @@ class CodevemberDay extends LitElement {
     return {
       day: {type: String},
       description: {type: String},
-      _formattedDay: {type: String}
+      _formattedDay: {type: String},
+      animation: {type: Object}
     };
   }
 
   firstUpdated() {
-    this._formattedDay = ('0' + this.day).slice(-2);
+    this._formattedDay = ('0' + this.day).slice(-2);   
    
     switch (this.day) {
       case "2":
@@ -104,21 +100,67 @@ class CodevemberDay extends LitElement {
             day02Data.layers[1].ks.r.k = minutesRotation;
             day02Data.layers[2].ks.r.k = hoursRotation;
             
-            lottie.loadAnimation({
+            this.animation = lottie.loadAnimation({
               container: this.shadowRoot.getElementById('animation'),
               renderer: 'svg',
               loop: true,
-              autoplay: true,
               animationData: day02Data
             });
           });
-        break;    
+        break;
+      case "5":      
+        this.animation = lottie.loadAnimation({
+          container: this.shadowRoot.getElementById('animation'),
+          renderer: 'svg',
+          autoplay: false,
+          path: `animations/${this._formattedDay}.json`
+        });
+
+        this.animation.addEventListener("DOMLoaded", () => {          
+          import("/node_modules/tone/build/Tone.min.js").then(() => {
+            this._synth = new Tone.Synth().toMaster();
+          });
+
+          this.shadowRoot.querySelector("svg #C").addEventListener("mouseenter", () => {
+            this.animation.playSegments([0,30], true);           
+            this._synth.triggerAttackRelease('C4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #D").addEventListener("mouseenter", () => {
+            this.animation.playSegments([30,60], true);           
+            this._synth.triggerAttackRelease('D4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #E").addEventListener("mouseenter", () => {
+            this.animation.playSegments([60,90], true);           
+            this._synth.triggerAttackRelease('E4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #F").addEventListener("mouseenter", () => {
+            this.animation.playSegments([90,120], true);           
+            this._synth.triggerAttackRelease('F4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #G").addEventListener("mouseenter", () => {
+            this.animation.playSegments([120,150], true);           
+            this._synth.triggerAttackRelease('G4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #A").addEventListener("mouseenter", () => {
+            this.animation.playSegments([150,180], true);           
+            this._synth.triggerAttackRelease('A4', '8n');                   
+          });
+          this.shadowRoot.querySelector("svg #B").addEventListener("mouseenter", () => {
+            this.animation.playSegments([180,210], true);           
+            this._synth.triggerAttackRelease('B4', '8n');                   
+          });
+        });
+
+        
+
+        this.animation.playSegments([[0, 100]], true);
+
+        break;
       default:      
-        lottie.loadAnimation({
+        this.animation = lottie.loadAnimation({
           container: this.shadowRoot.getElementById('animation'),
           renderer: 'svg',
           loop: true,
-          autoplay: true,
           path: `animations/${this._formattedDay}.json`
         });
     }    
