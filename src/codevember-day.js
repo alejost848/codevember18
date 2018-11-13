@@ -37,6 +37,10 @@ class CodevemberDay extends LitElement {
         z-index: 1;
         pointer-events: none;
       }
+
+      :host(.dark) .card_info {
+        color: black;
+      }
       
       h3{
         margin: 0;
@@ -51,6 +55,7 @@ class CodevemberDay extends LitElement {
         font-size: 18px;
         font-weight: 400;
         transition: transform 0.4s ease;
+        opacity: 0.8;
         transform: translateX(150px);
       }
       :host(:hover) h4{
@@ -112,11 +117,11 @@ class CodevemberDay extends LitElement {
         this.animation = lottie.loadAnimation({
           container: this.shadowRoot.getElementById('animation'),
           renderer: 'svg',
-          autoplay: false,
+          loop: true,
           path: `animations/${this._formattedDay}.json`
         });
 
-        this.animation.addEventListener("DOMLoaded", () => {          
+        this.animation.addEventListener("DOMLoaded", () => {
           import("/node_modules/tone/build/Tone.min.js").then(() => {
             this._synth = new Tone.Synth().toMaster();
           });
@@ -149,11 +154,11 @@ class CodevemberDay extends LitElement {
             this.animation.playSegments([180,210], true);           
             this._synth.triggerAttackRelease('B4', '8n');                   
           });
+
+          this.addEventListener("mouseout", () => {
+            this.animation.playSegments([0,210], false);
+          });          
         });
-
-        
-
-        this.animation.playSegments([[0, 100]], true);
 
         break;
       default:      

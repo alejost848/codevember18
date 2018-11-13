@@ -158,7 +158,7 @@ class CodevemberApp extends LitElement {
       </div>
 
       ${this.data.map((day, index) => html`
-        <codevember-day day="${index + 1}" description="${day.description}" class="${day.size}"></codevember-day>
+        <codevember-day day="${index + 1}" description="${day.description}" class="${day.size} ${day.theme}"></codevember-day>
       `)}
     </div>
     `;
@@ -173,36 +173,36 @@ class CodevemberApp extends LitElement {
   constructor(){
     super();
     this.data = [
-      {description: "Infinity", size: "small"},
-      {description: "Time", size: "small"},
-      {description: "Carrot", size: "small"},
-      {description: "Sky", size: "large"},
-      {description: "Music", size: "small"},
-      {description: "Web", size: "medium"},
-      {description: "Sea", size: "medium"},
-      {description: "Cat", size: "small"},
-      {description: "Green", size: "large"},
-      {description: "Apple", size: "small"},
-      {description: "RGB", size: "small"},
-      {description: "Bread", size: "small"},
-      {description: "Black Hole", size: "small"},
-      {description: "Coffee", size: "small"},
-      {description: "Fire", size: "small"},
-      {description: "Star", size: "small"},
-      {description: "Crown", size: "small"},
-      {description: "Paper", size: "small"},
-      {description: "Eggs", size: "small"},
-      {description: "Socks", size: "small"},
-      {description: "Skate", size: "small"},
-      {description: "Keys", size: "small"},
-      {description: "Lollipop", size: "small"},
-      {description: "Printer", size: "small"},
-      {description: "Screwdriver", size: "small"},
-      {description: "Bed", size: "small"},
-      {description: "Man Bun", size: "small"},
-      {description: "Speakers", size: "small"},
-      {description: "Supermarket", size: "small"},
-      {description: "Computer", size: "small"}
+      {description: "Infinity", size: "small", theme: "light"},
+      {description: "Time", size: "small", theme: "light"},
+      {description: "Carrot", size: "small", theme: "light"},
+      {description: "Sky", size: "large", theme: "light"},
+      {description: "Music", size: "small", theme: "light"},
+      {description: "Web", size: "medium", theme: "light"},
+      {description: "Sea", size: "medium", theme: "dark"},
+      {description: "Cat", size: "small", theme: "light"},
+      {description: "Green", size: "large", theme: "light"},
+      {description: "Apple", size: "small", theme: "light"},
+      {description: "RGB", size: "small", theme: "light"},
+      {description: "Bread", size: "small", theme: "light"},
+      {description: "Black Hole", size: "small", theme: "light"},
+      {description: "Coffee", size: "small", theme: "light"},
+      {description: "Fire", size: "small", theme: "light"},
+      {description: "Star", size: "small", theme: "light"},
+      {description: "Crown", size: "small", theme: "light"},
+      {description: "Paper", size: "small", theme: "light"},
+      {description: "Eggs", size: "small", theme: "light"},
+      {description: "Socks", size: "small", theme: "light"},
+      {description: "Skate", size: "small", theme: "light"},
+      {description: "Keys", size: "small", theme: "light"},
+      {description: "Lollipop", size: "small", theme: "light"},
+      {description: "Printer", size: "small", theme: "light"},
+      {description: "Screwdriver", size: "small", theme: "light"},
+      {description: "Bed", size: "small", theme: "light"},
+      {description: "Man Bun", size: "small", theme: "light"},
+      {description: "Speakers", size: "small", theme: "light"},
+      {description: "Supermarket", size: "small", theme: "light"},
+      {description: "Computer", size: "small", theme: "light"}
     ];
   }
 }
