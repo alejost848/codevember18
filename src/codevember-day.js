@@ -6,15 +6,9 @@ class CodevemberDay extends LitElement {
     <style>
       :host {        
         position: relative;
-        background-color: #39364b;
+        background-color: rgba(0, 0, 0, 0.08);
         border-radius: 10px;
         overflow: hidden;
-        transition: transform 0.4s ease;
-        transform: scaleX(1.0);
-      }
-
-      :host(:hover) {
-        transform: scaleX(1.02);
       }
 
       #animation{
@@ -48,6 +42,11 @@ class CodevemberDay extends LitElement {
         font-weight: 600;
         line-height: 40px;
         opacity: 0.08;
+        transition: opacity 0.4s ease;
+      }
+      :host(:hover) h3{
+        transform: translateX(0px);
+        opacity: 0.5;
       }
 
       h4{
@@ -107,7 +106,6 @@ class CodevemberDay extends LitElement {
             
             this.animation = lottie.loadAnimation({
               container: this.shadowRoot.getElementById('animation'),
-              renderer: 'svg',
               loop: true,
               animationData: day02Data
             });
@@ -116,43 +114,39 @@ class CodevemberDay extends LitElement {
       case "5":      
         this.animation = lottie.loadAnimation({
           container: this.shadowRoot.getElementById('animation'),
-          renderer: 'svg',
-          loop: true,
           path: `animations/${this._formattedDay}.json`
         });
 
         this.animation.addEventListener("DOMLoaded", () => {
-          import("/node_modules/tone/build/Tone.min.js").then(() => {
-            this._synth = new Tone.Synth().toMaster();
-          });
+          this._synth = new Tone.Synth().toMaster();
 
           this.shadowRoot.querySelector("svg #C").addEventListener("mouseenter", () => {
             this.animation.playSegments([0,30], true);           
-            this._synth.triggerAttackRelease('C4', '8n');                   
+            this._synth.triggerAttackRelease('C4', '8n');
           });
           this.shadowRoot.querySelector("svg #D").addEventListener("mouseenter", () => {
             this.animation.playSegments([30,60], true);           
-            this._synth.triggerAttackRelease('D4', '8n');                   
+            this._synth.triggerAttackRelease('D4', '8n');
           });
           this.shadowRoot.querySelector("svg #E").addEventListener("mouseenter", () => {
             this.animation.playSegments([60,90], true);           
-            this._synth.triggerAttackRelease('E4', '8n');                   
+            this._synth.triggerAttackRelease('E4', '8n');
           });
           this.shadowRoot.querySelector("svg #F").addEventListener("mouseenter", () => {
             this.animation.playSegments([90,120], true);           
-            this._synth.triggerAttackRelease('F4', '8n');                   
+            this._synth.triggerAttackRelease('F4', '8n');
           });
           this.shadowRoot.querySelector("svg #G").addEventListener("mouseenter", () => {
             this.animation.playSegments([120,150], true);           
-            this._synth.triggerAttackRelease('G4', '8n');                   
+            this._synth.triggerAttackRelease('G4', '8n');
           });
           this.shadowRoot.querySelector("svg #A").addEventListener("mouseenter", () => {
             this.animation.playSegments([150,180], true);           
-            this._synth.triggerAttackRelease('A4', '8n');                   
+            this._synth.triggerAttackRelease('A4', '8n');
           });
           this.shadowRoot.querySelector("svg #B").addEventListener("mouseenter", () => {
             this.animation.playSegments([180,210], true);           
-            this._synth.triggerAttackRelease('B4', '8n');                   
+            this._synth.triggerAttackRelease('B4', '8n');
           });
 
           this.addEventListener("mouseout", () => {
@@ -164,7 +158,6 @@ class CodevemberDay extends LitElement {
       default:      
         this.animation = lottie.loadAnimation({
           container: this.shadowRoot.getElementById('animation'),
-          renderer: 'svg',
           loop: true,
           path: `animations/${this._formattedDay}.json`
         });
