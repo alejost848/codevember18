@@ -1,8 +1,10 @@
 import {LitElement, html} from '@polymer/lit-element';
 import {until} from 'lit-html/directives/until';
+import { installOfflineWatcher } from 'pwa-helpers/network.js';
 
 import {alejostIcon} from './icons.js';
 import './codevember-day.js';
+import './snack-bar.js';
 
 class CodevemberApp extends LitElement {
 
@@ -40,6 +42,10 @@ class CodevemberApp extends LitElement {
         display: flex;
         flex-direction: column;
       }
+      .title_mask{
+        overflow: hidden;
+        align-self: flex-end;
+      }
       .flex{
         flex: 1;
       }
@@ -59,6 +65,7 @@ class CodevemberApp extends LitElement {
       codevember-day{
         grid-column: span 3;
         grid-row: span 1;
+        opacity: 0;
       }
       .small{
         grid-column: span 3;
@@ -77,6 +84,33 @@ class CodevemberApp extends LitElement {
         --animation-width: 100%;
         --animation-height: auto;
         --animation-scale: 1.3;
+      }
+      codevember-day:nth-of-type(9){
+        --animation-scale: 1.5;
+      }
+      codevember-day:nth-of-type(13){
+        --animation-scale: 1.3;
+      }
+
+      #toast{
+        display: none;
+      }
+
+      button{
+        margin: 0;
+        font: inherit;
+        border: none;
+        outline: inherit;
+        box-sizing: border-box;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: inherit;
+        text-transform: none;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;    
+        background-color: transparent;
+        padding: 0;
       }
 
       @media(max-width: 1700px){
@@ -149,24 +183,36 @@ class CodevemberApp extends LitElement {
           <a id="logo" href="https://alejo.st" target="_blank" rel="noopener" title="Logo">${alejostIcon}</a>
           <span class="flex"></span>
           <h1>
-            Code
-            vember
+            <div class="title_mask">
+              <div>Code</div>
+            </div>
+            <div class="title_mask">
+              <div>vember</div>
+            </div>
           </h1>
         </div>
         <span class="flex"></span>
-        <h2>'18</h2>
+        <div class="title_mask">
+          <h2>'18</h2>
+        </div>
       </div>
 
       ${this.data.map((day, index) => html`
         <codevember-day day="${index + 1}" description="${day.description}" class="${day.size} ${day.theme}"></codevember-day>
       `)}
     </div>
+
+    <snack-bar id="toast" ?active="${this._snackbarOpened}" @loaded="${this._snackbarLoaded}">
+      <span class="flex"></span>
+      <button id="toastAction" @click="${this._handleToastAction}"></button>
+    </snack-bar>
     `;
   }
 
   static get properties() {
     return {
-      data: {type: Array}
+      data: {type: Array},
+      _snackbarOpened: { type: Boolean }
     };
   }
 
@@ -204,6 +250,157 @@ class CodevemberApp extends LitElement {
       {description: "Supermarket", size: "small", theme: "light"},
       {description: "Computer", size: "small", theme: "light"}
     ];
+  }
+
+  firstUpdated() {
+    installOfflineWatcher((offline) => this._offlineChanged(offline));
+    this._installServiceWorker();
+
+    anime.timeline()
+      .add({
+        targets: this.shadowRoot.getElementById("logo"),
+        translateY: [100, 0],
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 1200
+      })
+      .add({
+        targets: this.shadowRoot.querySelectorAll("h1 div, h2"),
+        translateY: [100, 0],
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 1200,
+        offset: 300,
+        delay: function(el, i) {
+          return 70 * i;
+        }
+      })
+      .add({
+        targets: this.shadowRoot.querySelectorAll("codevember-day"),
+        translateY: [100, 0],
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 1400,
+        offset: 1400,
+        delay: function(el, i) {
+          return 90 * i;
+        }
+      });
+  }
+
+  _offlineChanged(offline) {
+    const previousOffline = this._offline;
+    this._offline = offline;
+
+    // Don't show the snackbar on the first load of the page if it is connected.
+    if (previousOffline === undefined && offline === false) {
+      return;
+    }    
+    
+    this._showToast({
+      detail: {
+        text: `${this._offline ? 'Offline' : 'Back online 😃'}`,
+        duration: `${this._offline ? 0 : 3000}`
+      }                   
+    });
+  }
+
+  _installServiceWorker() {    
+    // Load and register pre-caching Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js', {
+          scope: '/',
+        }).then((registration) => {
+          registration.onupdatefound = () => {
+            // The updatefound event implies that registration.installing is set; see
+            // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
+            const installingWorker = registration.installing;
+            installingWorker.onstatechange = () => {
+              switch (installingWorker.state) {
+                case 'installed':
+                  if (!navigator.serviceWorker.controller) {
+                    this._showToast({
+                      detail: {
+                        text: 'Caching complete. Site will work offline.',
+                        duration: 5000
+                      }                   
+                    });
+                  }
+                  break;
+                case 'redundant':
+                  throw Error('The installing service worker became redundant.');
+              }
+            };
+          };
+        }).catch((error) => {
+          console.error('Service worker registration failed:', error);
+        });
+
+        // Check to see if the service worker controlling the page at initial load
+        // has become redundant, since this implies there's a new service worker with fresh content.
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.onstatechange = (event) => {
+            if (event.target.state === 'redundant') {
+              this._showToast({
+                detail: {
+                  text: 'New version available',
+                  duration: 0,
+                  buttonText: 'Update',
+                  buttonTapHandler: function() {
+                    window.location.reload();
+                  }
+                }                   
+              });
+            }
+          };
+        }    
+      });
+    }
+  }
+
+  _showToast(e) {
+    //Hide previous toast if opened and show the new toast after waiting for the other to close
+    this._newToast = e.detail;
+
+    let currentToast = this.shadowRoot.getElementById('toast');
+    let currentToastAction = this.shadowRoot.getElementById('toastAction');
+
+    let waitTime = 0;
+    if (this._snackbarOpened) {
+      this._snackbarOpened = false;
+      waitTime = 300;
+    }
+    setTimeout(() => {
+      if (this._newToast.buttonText != undefined) {
+        currentToastAction.removeAttribute('hidden');
+        currentToastAction.textContent = this._newToast.buttonText;
+      } else {
+        currentToastAction.setAttribute('hidden', '');
+      }      
+      currentToast.text = this._newToast.text;
+
+      //Timer to hide the toast after it's visible
+      clearTimeout(this.__snackbarTimer);
+      this._snackbarOpened = true;
+      //If the duration is 0, don't hide it
+      this.__snackbarTimer = setTimeout(() => {
+        if (this._newToast.duration != 0) {      
+          this._snackbarOpened = false;
+        }
+      }, this._newToast.duration);
+    }, waitTime);
+  }
+
+  _snackbarLoaded(){
+    this.shadowRoot.getElementById("toast").style.display = "flex";
+  }
+
+  _handleToastAction() {
+    if (!this._newToast || !this._newToast.buttonTapHandler){
+      return;
+    }
+    this._newToast.buttonTapHandler();
   }
 }
 
