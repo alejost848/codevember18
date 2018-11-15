@@ -4,7 +4,7 @@
   "sources": [
     "animations/*",
     "fonts/*",
-    "images/*"
+    "images/**/*"
   ],
   "extraDependencies": [
     "manifest.json",
