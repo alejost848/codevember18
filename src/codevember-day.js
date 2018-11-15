@@ -114,6 +114,7 @@ class CodevemberDay extends LitElement {
       case "5":      
         this.animation = lottie.loadAnimation({
           container: this.shadowRoot.getElementById('animation'),
+          loop: true,
           path: `animations/${this._formattedDay}.json`
         });
 
@@ -121,37 +122,45 @@ class CodevemberDay extends LitElement {
           this._synth = new Tone.Synth().toMaster();
 
           this.shadowRoot.querySelector("svg #C").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([0,30], true);           
             this._synth.triggerAttackRelease('C4', '8n');
           });
           this.shadowRoot.querySelector("svg #D").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([30,60], true);           
             this._synth.triggerAttackRelease('D4', '8n');
           });
           this.shadowRoot.querySelector("svg #E").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([60,90], true);           
             this._synth.triggerAttackRelease('E4', '8n');
           });
           this.shadowRoot.querySelector("svg #F").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([90,120], true);           
             this._synth.triggerAttackRelease('F4', '8n');
           });
           this.shadowRoot.querySelector("svg #G").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([120,150], true);           
             this._synth.triggerAttackRelease('G4', '8n');
           });
           this.shadowRoot.querySelector("svg #A").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([150,180], true);           
             this._synth.triggerAttackRelease('A4', '8n');
           });
           this.shadowRoot.querySelector("svg #B").addEventListener("mouseenter", () => {
+            this.animation.loop = false;
             this.animation.playSegments([180,210], true);           
             this._synth.triggerAttackRelease('B4', '8n');
           });
 
           this.addEventListener("mouseout", () => {
+            this.animation.loop = true;
             this.animation.playSegments([0,210], false);
-          });          
+          });
         });
 
         break;
