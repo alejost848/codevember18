@@ -88,6 +88,9 @@ class CodevemberApp extends LitElement {
       codevember-day:nth-of-type(9){
         --animation-scale: 1.5;
       }
+      codevember-day:nth-of-type(10){
+        --animation-scale: 1.5;
+      }
       codevember-day:nth-of-type(13){
         --animation-scale: 1.3;
       }
