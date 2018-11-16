@@ -10,7 +10,7 @@
     "manifest.json",
     "node_modules/@webcomponents/webcomponentsjs/**",
     "push-manifest.json",
-    "lottie_light.min.js",
+    "node_modules/lottie-web/build/player/lottie.min.js",
     "node_modules/tone/build/Tone.min.js",
     "node_modules/animejs/anime.min.js"
   ],
