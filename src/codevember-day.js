@@ -163,6 +163,25 @@ class CodevemberDay extends LitElement {
             });
     
             break;
+          case "8":
+            this.animation = lottie.loadAnimation({
+              container: this.shadowRoot.getElementById('animation'),
+              loop: true,
+              animationData: animationJson
+            });
+            this.animation.addEventListener("DOMLoaded", () => {
+              window.addEventListener("mousemove", (event) => {
+                let xPos = event.pageX - window.innerWidth / 2;
+                let yPos = event.pageY - window.innerHeight / 2 - window.pageYOffset;
+                
+                let xClamp = 500 * xPos / window.innerWidth;
+                let yClamp = 500 * yPos / window.innerHeight;               
+
+                this.animation.animationData.layers[0].ks.p.k[0].s = [xClamp, yClamp, 0];
+                this.animation.animationData.layers[0].ks.p.k[0].e = [xClamp, yClamp, 0];                
+              });
+            });
+            break;
           default:      
             this.animation = lottie.loadAnimation({
               container: this.shadowRoot.getElementById('animation'),
