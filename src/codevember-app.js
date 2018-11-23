@@ -94,6 +94,12 @@ class CodevemberApp extends LitElement {
       codevember-day:nth-of-type(13){
         --animation-scale: 1.3;
       }
+      codevember-day:nth-of-type(16){
+        --animation-scale: 1.3;
+      }
+      codevember-day:nth-of-type(22){
+        --animation-scale: 1.3;
+      }
 
       #toast{
         display: none;
