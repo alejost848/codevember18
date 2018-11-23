@@ -103,19 +103,11 @@ class CodevemberDay extends LitElement {
     
             day02Data.layers[1].ks.r.k = minutesRotation;
             day02Data.layers[2].ks.r.k = hoursRotation;
-            
-            this.animation = lottie.loadAnimation({
-              container: this.shadowRoot.getElementById('animation'),
-              loop: true,
-              animationData: day02Data
-            });
+
+            this.loadAnimation(day02Data);
             break;
           case "5":      
-            this.animation = lottie.loadAnimation({
-              container: this.shadowRoot.getElementById('animation'),
-              loop: true,
-              animationData: animationJson
-            });
+            this.loadAnimation(animationJson);
     
             this.animation.addEventListener("DOMLoaded", () => {
               this._synth = new Tone.Synth().toMaster();
@@ -157,25 +149,30 @@ class CodevemberDay extends LitElement {
               });
     
               this.addEventListener("mouseout", () => {
-                this.animation.loop = true;
-                this.animation.playSegments([0,210], false);
+                this.animation.stop();
               });
             });
     
             break;
           case "8":
-            this.animation = lottie.loadAnimation({
-              container: this.shadowRoot.getElementById('animation'),
-              loop: true,
-              animationData: animationJson
-            });
+            this.loadAnimation(animationJson);
             this.animation.addEventListener("DOMLoaded", () => {
+              // this.addEventListener("mousemove", (event) => {
               window.addEventListener("mousemove", (event) => {
-                let xPos = event.pageX - window.innerWidth / 2;
-                let yPos = event.pageY - window.innerHeight / 2 - window.pageYOffset;
+                let rect = this.getBoundingClientRect();
+                // React to mouse inside the card only
+                // let posXRelativeToCenter = event.pageX - rect.left - rect.width / 2;
+                // let posYRelativeToCenter = event.pageY - rect.top - window.pageYOffset - rect.height / 2;
+                // Map from -250 to 250
+                // let xClamp = 500 * posXRelativeToCenter / rect.width;
+                // let yClamp = 500 * posYRelativeToCenter / rect.height; 
+
+                //React to mouse in the whole website
+                let posXRelativeToCenter = event.pageX - window.innerWidth / 2;
+                let posYRelativeToCenter = event.pageY - window.innerHeight / 2 - window.pageYOffset;
+                let xClamp = 500 * posXRelativeToCenter / window.innerWidth;
+                let yClamp = 500 * posYRelativeToCenter / window.innerHeight;               
                 
-                let xClamp = 500 * xPos / window.innerWidth;
-                let yClamp = 500 * yPos / window.innerHeight;               
 
                 this.animation.animationData.layers[0].ks.p.k[0].s = [xClamp, yClamp, 0];
                 this.animation.animationData.layers[0].ks.p.k[0].e = [xClamp, yClamp, 0];                
@@ -183,13 +180,28 @@ class CodevemberDay extends LitElement {
             });
             break;
           default:      
-            this.animation = lottie.loadAnimation({
-              container: this.shadowRoot.getElementById('animation'),
-              loop: true,
-              animationData: animationJson
-            });
+            this.loadAnimation(animationJson);
         }
-      });    
+      });
+    
+    // Play animations on hover only
+    // this.addEventListener("mouseenter", () => {
+    //   if (this.animation) {        
+    //     this.animation.play();
+    //   }
+    // });
+    // this.addEventListener("mouseout", () => {
+    //   this.animation.pause();
+    // });
+  }
+
+  loadAnimation(data){
+    this.animation = lottie.loadAnimation({
+      container: this.shadowRoot.getElementById('animation'),
+      autoplay: true,
+      loop: true,
+      animationData: data
+    });
   }
 }
 
