@@ -85,6 +85,7 @@ class CodevemberDay extends LitElement {
         font-family: 'Poppins', Arial, Helvetica, sans-serif;
         padding: 12px 16px;
         background: none;
+        outline: none;
       }
     </style>
     <div class="card_info">
@@ -97,7 +98,7 @@ class CodevemberDay extends LitElement {
     ${this.day == 24 ?
       html`
         <div id="day24">
-          <input id="day24_input" type="text" placeholder="Type (or not) and hit enter" maxlength="15">
+          <input id="day24_input" type="text" placeholder="Type (or not) and hit enter" maxlength="20">
         </div>
       `:
       html``
@@ -214,6 +215,7 @@ class CodevemberDay extends LitElement {
 
             this.animation.addEventListener("complete", () => {
               input.style.display = "block";
+              input.focus();
               this.animation.goToAndStop(0);
             });
 
