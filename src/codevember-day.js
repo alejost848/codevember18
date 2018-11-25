@@ -68,6 +68,24 @@ class CodevemberDay extends LitElement {
       #C,#D,#E,#F,#G,#A,#B{
         cursor: pointer;
       }
+
+      #day24{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+      }
+      #day24 input{
+        border: none;
+        width: 50%;
+        max-width: 190px;
+        font-family: 'Poppins', Arial, Helvetica, sans-serif;
+        padding: 12px 16px;
+        background: none;
+      }
     </style>
     <div class="card_info">
       <h3>${this._formattedDay}</h3>
@@ -75,6 +93,15 @@ class CodevemberDay extends LitElement {
       <h4>${this.description}</h4>
     </div>
     <div id="animation"></div>
+
+    ${this.day == 24 ?
+      html`
+        <div id="day24">
+          <input id="day24_input" type="text" placeholder="Type (or not) and hit enter" maxlength="15">
+        </div>
+      `:
+      html``
+    }
     `;
   }
 
@@ -177,6 +204,33 @@ class CodevemberDay extends LitElement {
                 this.animation.animationData.layers[0].ks.p.k[0].s = [xClamp, yClamp, 0];
                 this.animation.animationData.layers[0].ks.p.k[0].e = [xClamp, yClamp, 0];                
               });
+            });
+            break;
+          case "24":
+            this.loadAnimation(animationJson);
+            this.animation.addEventListener("DOMLoaded", () => {
+              this.animation.stop();
+            });
+
+            this.animation.addEventListener("complete", () => {
+              input.style.display = "block";
+              this.animation.goToAndStop(0);
+            });
+
+            let input = this.shadowRoot.getElementById('day24_input');
+            input.addEventListener("keydown", (event) => {                 
+              if(event.key === 'Enter') {
+                if (input.value != "") {                  
+                  this.animation.renderer.elements[2].updateDocumentData({t:input.value});
+                } else {
+                  this.animation.renderer.elements[2].updateDocumentData({t:"YOU’RE FIRED!!!"});                  
+                }
+
+                input.style.display = "none";
+                this.animation.loop = false;
+                this.animation.play();
+                input.value = "";             
+              }
             });
             break;
           default:      
